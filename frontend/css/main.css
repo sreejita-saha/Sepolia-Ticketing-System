@@ -1,0 +1,201 @@
+/* ============================================================
+   main.css — Global styles and design tokens
+   Sepolia Ticketing DApp
+   ============================================================ */
+
+/* --- Design tokens --- */
+:root {
+  --color-bg:           #0f1117;
+  --color-surface:      #1a1d27;
+  --color-surface-alt:  #22263a;
+  --color-border:       #2e3250;
+  --color-primary:      #6c63ff;
+  --color-primary-hover:#5a52e0;
+  --color-danger:       #ff4d4d;
+  --color-danger-bg:    #2a0f0f;
+  --color-warning:      #f5a623;
+  --color-warning-bg:   #2a1e00;
+  --color-success:      #3ecf8e;
+  --color-text:         #e8eaf2;
+  --color-text-muted:   #8890b0;
+  --font-sans:          'Segoe UI', system-ui, sans-serif;
+  --font-mono:          'Courier New', Courier, monospace;
+  --radius-sm:          6px;
+  --radius-md:          10px;
+  --radius-lg:          16px;
+  --shadow-card:        0 4px 24px rgba(0,0,0,0.4);
+  --transition:         0.18s ease;
+}
+
+/* --- Reset --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Typography --- */
+h1, h2, h3 { font-weight: 700; line-height: 1.25; }
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: var(--font-mono); font-size: 0.9em; }
+
+/* --- Site header --- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 2rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-logo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+.site-logo:hover { text-decoration: none; color: var(--color-primary); }
+
+.site-nav { display: flex; gap: 1.5rem; }
+.site-nav a {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+.site-nav a:hover,
+.site-nav a.nav-active {
+  color: var(--color-text);
+  text-decoration: none;
+}
+.site-nav a.nav-active { font-weight: 600; }
+
+/* --- Page container --- */
+.page-container {
+  flex: 1;
+  max-width: 760px;
+  width: 100%;
+  margin: 2.5rem auto;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-title {
+  font-size: 1.85rem;
+  margin-bottom: 0.25rem;
+}
+.page-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.97rem;
+}
+
+/* --- Cards --- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.card--hidden { display: none !important; }
+
+.card-title { font-size: 1.1rem; }
+.card-body { color: var(--color-text-muted); font-size: 0.95rem; }
+
+/* --- Forms --- */
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-input {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 1rem;
+  padding: 0.6rem 0.9rem;
+  transition: border-color var(--transition);
+  width: 100%;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+.form-input::placeholder { color: var(--color-text-muted); }
+
+.error-text {
+  color: var(--color-danger);
+  font-size: 0.875rem;
+  min-height: 1.25rem;
+}
+
+/* --- Buttons --- */
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  transition: background var(--transition), opacity var(--transition);
+  align-self: flex-start;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--color-primary-hover); }
+
+.btn-secondary {
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+.btn-secondary:hover:not(:disabled) { border-color: var(--color-primary); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+.btn-outline:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-text); }
+
+/* --- Site footer --- */
+.site-footer {
+  text-align: center;
+  padding: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  .site-header { flex-direction: column; gap: 0.75rem; padding: 1rem; }
+  .site-nav { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+  .page-container { margin: 1.5rem auto; }
+}

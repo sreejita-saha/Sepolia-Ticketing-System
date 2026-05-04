@@ -1,0 +1,92 @@
+/* ============================================================
+   create-wallet.css — Page-specific styles for create-wallet.html
+   ============================================================ */
+
+/* --- Warning banner (private key security notice) --- */
+.warning-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-warning);
+}
+
+.warning-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }
+
+/* --- Result rows (address / key display) --- */
+.result-group { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.result-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.result-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  word-break: break-all;
+}
+
+.result-box--private {
+  border-color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.result-box code {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  line-height: 1.55;
+}
+
+/* Copy button inside result boxes */
+.btn-copy {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.65rem;
+  transition: color var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.btn-copy:hover { color: var(--color-text); border-color: var(--color-primary); }
+.btn-copy.copied { color: var(--color-success); border-color: var(--color-success); }
+
+.result-hint {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+.result-hint--danger { color: var(--color-danger); font-weight: 600; }
+
+/* Countdown number highlighted in warning */
+.countdown-highlight {
+  font-weight: 700;
+  font-size: 1.05em;
+  color: var(--color-warning);
+}
+
+/* --- "Key cleared" notice shown after countdown --- */
+.cleared-notice {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.9rem;
+  color: var(--color-success);
+}
