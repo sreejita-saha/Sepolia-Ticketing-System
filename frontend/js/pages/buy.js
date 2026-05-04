@@ -262,7 +262,7 @@ btnBuy.addEventListener("click", async () => {
       chainId: 11155111
     };
 
-    const signedTx = web3.eth.accounts.signTransaction(tx, currentWallet.privateKey);
+    const signedTx = await web3.eth.accounts.signTransaction(tx, currentWallet.privateKey);
     const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
     currentTransaction = receipt.transactionHash;
@@ -271,7 +271,7 @@ btnBuy.addEventListener("click", async () => {
   } catch (err) {
     handleTransactionError(err);
   }
-};
+});
 
 // ─── Transaction state handlers ────────────────────────────────────────────────
 

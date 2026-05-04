@@ -15,9 +15,9 @@
   <meta http-equiv="Content-Security-Policy"
     content="
       default-src 'none';
-      script-src 'self' https://cdn.jsdelivr.net;
+      script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
       style-src  'self';
-      connect-src 'none';
+      connect-src 'none' https://cdn.jsdelivr.net;
       img-src    'none';
       font-src   'none';
       frame-src  'none';
@@ -169,7 +169,7 @@
   <!-- Web3.js loaded from CDN (pinned to stable 1.x, sha384 integrity check) -->
   <script
     src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"
-    integrity="sha384-L5f6QV7sEfkBq6kxcSsNF7SLq8MqfknY3Wp0BVqhGRdVWxJxnFKmFhJjBmLVTQP"
+    integrity="sha384-ulu2XS1P+kSni6pddyZyDGmNiztg1R9ziuOn0U+RtEoVB46ekZ9MLOzruBMtXjQQ"
     crossorigin="anonymous"
   ></script>
   <!-- Load utilities for shared functions -->

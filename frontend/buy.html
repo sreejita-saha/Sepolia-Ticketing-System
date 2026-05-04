@@ -6,9 +6,9 @@
   <meta http-equiv="Content-Security-Policy"
     content="
       default-src 'none';
-      script-src  'self' https://cdn.jsdelivr.net;
+      script-src  'self' https://cdn.jsdelivr.net 'unsafe-inline';
       style-src   'self';
-      connect-src https://rpc.sepolia.org https://sepolia.etherscan.io;
+      connect-src https://sepolia.drpc.org https://sepolia.etherscan.io https://cdn.jsdelivr.net ws://127.0.0.1:5500;
       img-src     'none';
       font-src    'none';
       frame-src   'none';
@@ -227,7 +227,7 @@
   <!-- Web3.js from CDN — pinned version, SRI hash must be verified before acceptance -->
   <script
     src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"
-    integrity="sha384-L5f6QV7sEfkBq6kxcSsNF7SLq8MqfknY3Wp0BVqhGRdVWxJxnFKmFhJjBmLVTQP"
+    integrity="sha384-ulu2XS1P+kSni6pddyZyDGmNiztg1R9ziuOn0U+RtEoVB46ekZ9MLOzruBMtXjQQ"
     crossorigin="anonymous"
   ></script>
   <!-- Load utilities before page scripts — provides shared functions -->

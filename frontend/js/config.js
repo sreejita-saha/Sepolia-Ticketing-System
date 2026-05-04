@@ -12,10 +12,11 @@
 const CHAIN_ID = 11155111;
 
 // Deployed contract address on Sepolia — replace after first deployment
-const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
+const CONTRACT_ADDRESS = "0x6b3e0817e054e63ea344EDb1eF074ab35b8F40bE";
 
-// Sepolia public JSON-RPC endpoint (no API key required for read calls)
-const RPC_URL = "https://rpc.sepolia.org";
+// Sepolia public JSON-RPC endpoint via Alchemy (CORS-enabled for browser requests)
+// For production, replace with your own Alchemy/Infura API key
+const RPC_URL = "https://sepolia.drpc.org";
 
 /**
  * Minimal ABI — only the functions the frontend actually calls.
