@@ -10,14 +10,23 @@ contract TicketingSystem {
     mapping(address => uint256) public balanceOf;
 
     event TicketPurchased(address indexed buyer, uint256 amount);
+    event TicketReturned(address indexed returner, uint256 quantity);
 
     function buyTicket() payable public {
         require(msg.value == ticketPrice, "Incorrect SETH amount sent");
         require(ticketsRemaining > 0, "No tickets available from vendor");
-        
+
         balanceOf[msg.sender] += 1;
         ticketsRemaining -= 1;
         emit TicketPurchased(msg.sender, msg.value);
+    }
+
+    function returnTicket(uint256 quantity) public {
+        require(quantity > 0, "Quantity must be at least 1");
+        require(balanceOf[msg.sender] >= quantity, "Insufficient token balance");
+        balanceOf[msg.sender] -= quantity;
+        ticketsRemaining += quantity;
+        emit TicketReturned(msg.sender, quantity);
     }
 
     function totalSupply() public view returns (uint256) {

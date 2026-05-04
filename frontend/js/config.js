@@ -72,5 +72,12 @@ const CONTRACT_ABI = [
     "stateMutability": "payable",
     "inputs":  [],
     "outputs": []
+  },
+  {
+    "name": "returnTicket",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs":  [{ "name": "quantity", "type": "uint256" }],
+    "outputs": []
   }
 ];
