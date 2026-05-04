@@ -20,6 +20,10 @@ if (typeof CONTRACT_ADDRESS === "undefined" || typeof CONTRACT_ABI === "undefine
   throw new Error("balance.js requires config.js to be loaded first.");
 }
 
+if (typeof truncateAddress === "undefined" || typeof isValidEthAddress === "undefined") {
+  throw new Error("balance.js requires utils.js to be loaded first.");
+}
+
 // ─── Check for unconfigured contract address ─────────────────────────────────
 
 const IS_CONTRACT_CONFIGURED = CONTRACT_ADDRESS !== "0x0000000000000000000000000000000000000000";
@@ -155,22 +159,6 @@ function selectRole(roleKey) {
 
 // ─── Address validation ───────────────────────────────────────────────────────
 
-/**
- * Returns true if the string is a valid Ethereum address (0x + 40 hex chars).
- * Does not check checksum — accepts both cased variants.
- */
-function isValidEthAddress(address) {
-  return /^0x[0-9a-fA-F]{40}$/.test(address);
-}
-
-/**
- * Detects if a string looks like an ENS name (e.g., "vitalik.eth").
- * We don't support ENS in this simple balance checker.
- */
-function looksLikeEnsName(input) {
-  return /\.eth$/.test(input.toLowerCase());
-}
-
 function setAddressError(message) {
   errorAddress.textContent = message;
 }
@@ -209,23 +197,6 @@ function showError(heading, detail) {
   sectionError.classList.remove("card--hidden");
   errorHeading.textContent = heading;
   errorDetail.textContent  = detail;
-}
-
-/**
- * Formats a raw Wei value (string) into a human-readable ETH string
- * capped at 6 decimal places, stripping trailing zeros.
- */
-function formatEth(weiString) {
-  const eth = parseFloat(web3.utils.fromWei(weiString, "ether"));
-  // toFixed(6) then strip trailing zeros
-  return eth.toFixed(6).replace(/\.?0+$/, "") || "0";
-}
-
-/**
- * Truncates an Ethereum address to 0x1234…abcd format for display badges.
- */
-function truncateAddress(address) {
-  return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
 // ─── Chain query functions ────────────────────────────────────────────────────

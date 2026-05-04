@@ -50,5 +50,26 @@ const CONTRACT_ABI = [
     "stateMutability": "view",
     "inputs":  [],
     "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "name": "ticketPrice",
+    "type": "function",
+    "stateMutability": "view",
+    "inputs":  [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "name": "ticketsRemaining",
+    "type": "function",
+    "stateMutability": "view",
+    "inputs":  [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "name": "buyTicket",
+    "type": "function",
+    "stateMutability": "payable",
+    "inputs":  [],
+    "outputs": []
   }
 ];

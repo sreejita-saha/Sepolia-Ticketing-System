@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'none';
+      script-src  'self' https://cdn.jsdelivr.net;
+      style-src   'self';
+      connect-src https://rpc.sepolia.org https://sepolia.etherscan.io;
+      img-src     'none';
+      font-src    'none';
+      frame-src   'none';
+      object-src  'none';
+      base-uri    'none';
+      form-action 'none';
+    "
+  />
+  <title>Buy Tickets — Sepolia Ticketing</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/pages/buy.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="site-logo">🎟 Sepolia Ticketing</a>
+    <nav class="site-nav">
+      <a href="index.html">Events</a>
+      <a href="buy.html" class="nav-active">Buy Tickets</a>
+      <a href="balance.html">Balance Check</a>
+      <a href="transfer.html">Transfer</a>
+      <a href="create-wallet.html">Create Wallet</a>
+    </nav>
+  </header>
+
+  <main class="page-container">
+
+    <h1 class="page-title">Buy Tickets</h1>
+    <p class="page-subtitle">
+      Purchase event tickets directly from the Sepolia blockchain.
+      Load your wallet and complete the transaction.
+    </p>
+
+    <!-- ── Ticket price (idle state) ──────────────────────────────────────── -->
+    <section class="card" id="section-price">
+      <h2 class="card-title">Ticket Details</h2>
+      <div class="price-display">
+        <div class="price-label">Current Ticket Price</div>
+        <div class="price-value" id="price-value">—</div>
+        <div class="price-unit">SETH</div>
+      </div>
+      <p class="price-note" id="price-note">Loading ticket price from contract…</p>
+    </section>
+
+    <!-- ── Wallet loader ───────────────────────────────────────────────────── -->
+    <section class="card" id="section-wallet-loader">
+      <h2 class="card-title">Load Your Wallet</h2>
+
+      <div class="wallet-loader">
+        <!-- Private key input -->
+        <div class="form-group">
+          <label class="form-label" for="input-private-key">Private Key (Hex)</label>
+          <input
+            class="form-input"
+            type="password"
+            id="input-private-key"
+            placeholder="0x..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <p class="form-hint">Paste your private key starting with 0x</p>
+          <p class="error-text" id="error-private-key" role="alert" aria-live="polite"></p>
+        </div>
+
+        <!-- OR divider -->
+        <div class="or-divider">
+          <span>OR</span>
+        </div>
+
+        <!-- Keystore file upload -->
+        <div class="form-group">
+          <label class="form-label" for="input-keystore">Encrypted Keystore File</label>
+          <input
+            class="form-input-file"
+            type="file"
+            id="input-keystore"
+            accept=".json"
+          />
+          <p class="form-hint">Upload your UTC--*.json keystore file</p>
+          <p class="error-text" id="error-keystore" role="alert" aria-live="polite"></p>
+        </div>
+
+        <!-- Password for keystore (shown only when file is selected) -->
+        <div class="form-group card--hidden" id="keystore-password-group">
+          <label class="form-label" for="input-keystore-password">Keystore Password</label>
+          <input
+            class="form-input"
+            type="password"
+            id="input-keystore-password"
+            placeholder="Enter password"
+            autocomplete="off"
+          />
+          <p class="form-hint">Required to decrypt your keystore file</p>
+          <p class="error-text" id="error-keystore-password" role="alert" aria-live="polite"></p>
+        </div>
+
+        <button class="btn btn-primary" id="btn-load-wallet">Load Wallet</button>
+      </div>
+    </section>
+
+    <!-- ── Wallet loaded state ───────────────────────────────────────────── -->
+    <section class="card card--hidden" id="section-wallet-loaded">
+      <h2 class="card-title">Your Wallet</h2>
+
+      <div class="wallet-info">
+        <div class="info-row">
+          <span class="info-label">Address</span>
+          <span class="info-value" id="wallet-address">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">SETH Balance</span>
+          <span class="info-value" id="wallet-balance">—</span>
+        </div>
+      </div>
+
+      <button class="btn btn-outline" id="btn-change-wallet">Change Wallet</button>
+    </section>
+
+    <!-- ── Insufficient balance warning ───────────────────────────────────── -->
+    <section class="card card--warning card--hidden" id="section-insufficient-balance" aria-live="assertive">
+      <span class="card-icon">⚠️</span>
+      <div>
+        <p class="card-heading">Insufficient Balance</p>
+        <p class="card-detail" id="insufficient-balance-detail">Your SETH balance is lower than the ticket price.</p>
+      </div>
+    </section>
+
+    <!-- ── Sold out message ───────────────────────────────────────────────── -->
+    <section class="card card--warning card--hidden" id="section-sold-out" aria-live="assertive">
+      <span class="card-icon">📭</span>
+      <div>
+        <p class="card-heading">Sold Out</p>
+        <p class="card-detail">All tickets have been sold. This event has reached maximum capacity.</p>
+      </div>
+    </section>
+
+    <!-- ── Buy button (shown only when wallet loaded and conditions met) ───── -->
+    <section class="card card--hidden" id="section-buy-button">
+      <button class="btn btn-primary btn-large" id="btn-buy">Buy Ticket</button>
+    </section>
+
+    <!-- ── Transaction pending state ──────────────────────────────────────── -->
+    <section class="card card--hidden" id="section-pending" aria-live="polite">
+      <div class="transaction-spinner-container">
+        <div class="spinner" role="status"></div>
+        <p class="spinner-label">Transaction pending…</p>
+      </div>
+      <div class="transaction-info">
+        <p class="info-label">Transaction Hash</p>
+        <a class="tx-hash-link" id="pending-tx-hash" target="_blank" rel="noopener noreferrer">
+          View on Etherscan
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Transaction success state ──────────────────────────────────────── -->
+    <section class="card card--success card--hidden" id="section-success" aria-live="assertive">
+      <span class="card-icon">✅</span>
+      <div>
+        <p class="card-heading">Transaction Successful!</p>
+        <p class="card-detail">Your ticket has been purchased and added to your wallet.</p>
+      </div>
+      <div class="success-details">
+        <div class="detail-row">
+          <span class="detail-label">Transaction Hash</span>
+          <a class="tx-hash-link" id="success-tx-hash" target="_blank" rel="noopener noreferrer">
+            View on Etherscan
+          </a>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Your New Ticket Balance</span>
+          <span class="detail-value" id="success-ticket-balance">—</span>
+        </div>
+      </div>
+      <button class="btn btn-outline" id="btn-buy-another">Buy Another Ticket</button>
+    </section>
+
+    <!-- ── Transaction reverted state ────────────────────────────────────── -->
+    <section class="card card--error card--hidden" id="section-reverted" aria-live="assertive">
+      <span class="card-icon">❌</span>
+      <div>
+        <p class="card-heading">Transaction Reverted</p>
+        <p class="card-detail" id="reverted-detail">The transaction failed on-chain.</p>
+      </div>
+      <div class="error-details">
+        <div class="detail-row">
+          <span class="detail-label">Reason</span>
+          <span class="detail-value" id="reverted-reason">Unknown error</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Transaction Hash</span>
+          <a class="tx-hash-link" id="reverted-tx-hash" target="_blank" rel="noopener noreferrer">
+            View on Etherscan
+          </a>
+        </div>
+      </div>
+      <button class="btn btn-outline" id="btn-try-again-reverted">Try Again</button>
+    </section>
+
+    <!-- ── Transaction rejected state ─────────────────────────────────────── -->
+    <section class="card card--warning card--hidden" id="section-rejected" aria-live="assertive">
+      <span class="card-icon">🚫</span>
+      <div>
+        <p class="card-heading">Transaction Rejected</p>
+        <p class="card-detail">You rejected the transaction in your wallet. No funds were deducted.</p>
+      </div>
+      <button class="btn btn-outline" id="btn-try-again-rejected">Try Again</button>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Sepolia Ticketing System — Testnet only. All transactions are on the Sepolia blockchain.</p>
+  </footer>
+
+  <!-- Web3.js from CDN — pinned version, SRI hash must be verified before acceptance -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"
+    integrity="sha384-L5f6QV7sEfkBq6kxcSsNF7SLq8MqfknY3Wp0BVqhGRdVWxJxnFKmFhJjBmLVTQP"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Load utilities before page scripts — provides shared functions -->
+  <script src="js/utils.js"></script>
+  <!-- Load config before page script — provides CONTRACT_ADDRESS, CONTRACT_ABI, RPC_URL -->
+  <script src="js/config.js"></script>
+  <script src="js/pages/buy.js"></script>
+
+</body>
+</html>
