@@ -1,0 +1,165 @@
+<h1 class="page-title">Balance Check</h1>
+<p class="page-subtitle">
+  Query live Sepolia blockchain data. Choose your role to see the information
+  relevant to you.
+</p>
+
+<!-- ── Role selector ──────────────────────────────────────────────────── -->
+<section class="card" id="section-role">
+  <h2 class="card-title">Step 1 — Select Your Role</h2>
+
+  <div class="role-grid" role="radiogroup" aria-label="Select your role">
+
+    <button
+      class="role-btn role-btn--active"
+      id="role-attendee"
+      data-role="attendee"
+      aria-pressed="true"
+    >
+      <span class="role-icon">🎫</span>
+      <span class="role-name">Attendee</span>
+      <span class="role-desc">Check your own wallet — SETH balance and ticket count.</span>
+    </button>
+
+    <button
+      class="role-btn"
+      id="role-doorman"
+      data-role="doorman"
+      aria-pressed="false"
+    >
+      <span class="role-icon">🚪</span>
+      <span class="role-name">Doorman</span>
+      <span class="role-desc">Validate an attendee's ticket — VALID / INVALID only. SETH balance not shown.</span>
+    </button>
+
+    <button
+      class="role-btn"
+      id="role-vendor"
+      data-role="vendor"
+      aria-pressed="false"
+    >
+      <span class="role-icon">📊</span>
+      <span class="role-name">Vendor</span>
+      <span class="role-desc">Full view — SETH balance, ticket balance, and remaining supply.</span>
+    </button>
+
+  </div>
+</section>
+
+<!-- ── Address input ───────────────────────────────────────────────────── -->
+<section class="card" id="section-input">
+  <h2 class="card-title" id="input-section-title">Step 2 — Enter Wallet Address</h2>
+
+  <div class="form-group">
+    <label class="form-label" for="input-address" id="input-address-label">
+      Wallet Address
+    </label>
+    <div class="address-input-row">
+      <input
+        class="form-input"
+        type="text"
+        id="input-address"
+        placeholder="0x..."
+        autocomplete="off"
+        spellcheck="false"
+        maxlength="42"
+      />
+      <button class="btn btn-primary" id="btn-check">Check</button>
+    </div>
+    <p class="error-text" id="error-address" role="alert" aria-live="polite"></p>
+  </div>
+
+  <!-- Role-specific context hint shown below the input -->
+  <p class="role-context-hint" id="role-context-hint"></p>
+</section>
+
+<!-- ── Loading spinner ─────────────────────────────────────────────────── -->
+<div class="spinner-container card--hidden" id="section-loading" aria-live="polite" aria-label="Loading">
+  <div class="spinner" role="status"></div>
+  <p class="spinner-label">Querying Sepolia blockchain…</p>
+</div>
+
+<!-- ── Results ─────────────────────────────────────────────────────────── -->
+<section class="card card--hidden" id="section-result" aria-live="polite">
+
+  <div class="result-header">
+    <h2 class="card-title" id="result-title">Results</h2>
+    <span class="result-address-badge" id="result-address-badge"></span>
+  </div>
+
+  <!-- Attendee view: SETH balance + ticket balance -->
+  <div id="view-attendee" class="result-view card--hidden">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-label">SETH Balance</span>
+        <span class="stat-value" id="attendee-eth-balance">—</span>
+        <span class="stat-unit">ETH</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Ticket Tokens</span>
+        <span class="stat-value" id="attendee-ticket-balance">—</span>
+        <span class="stat-unit">tokens</span>
+      </div>
+    </div>
+    <p class="result-note">
+      SETH balance is your Sepolia testnet ETH. Ticket tokens represent
+      purchased event tickets held in this wallet.
+    </p>
+  </div>
+
+  <!-- Doorman view: VALID / INVALID only — no SETH balance shown -->
+  <div id="view-doorman" class="result-view card--hidden">
+    <div class="validity-block" id="validity-block">
+      <span class="validity-icon" id="validity-icon"></span>
+      <span class="validity-label" id="validity-label"></span>
+    </div>
+    <div class="stat-grid stat-grid--single">
+      <div class="stat-card">
+        <span class="stat-label">Ticket Tokens</span>
+        <span class="stat-value" id="doorman-ticket-balance">—</span>
+        <span class="stat-unit">tokens</span>
+      </div>
+    </div>
+    <p class="result-note">
+      VALID means the wallet holds at least 1 ticket token.
+      INVALID means no tickets are present in this wallet.
+    </p>
+  </div>
+
+  <!-- Vendor view: SETH balance + ticket balance + remaining supply -->
+  <div id="view-vendor" class="result-view card--hidden">
+    <div class="stat-grid stat-grid--three">
+      <div class="stat-card">
+        <span class="stat-label">SETH Balance</span>
+        <span class="stat-value" id="vendor-eth-balance">—</span>
+        <span class="stat-unit">ETH</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Ticket Tokens</span>
+        <span class="stat-value" id="vendor-ticket-balance">—</span>
+        <span class="stat-unit">tokens</span>
+      </div>
+      <div class="stat-card stat-card--supply">
+        <span class="stat-label">Tickets Remaining</span>
+        <span class="stat-value" id="vendor-supply-remaining">—</span>
+        <span class="stat-unit">of <span id="vendor-supply-cap">—</span></span>
+      </div>
+    </div>
+    <p class="result-note">
+      "Tickets Remaining" is the total unsold supply in the contract
+      (cap minus minted). This is not specific to the queried address.
+    </p>
+  </div>
+
+  <button class="btn btn-outline" id="btn-clear-result">Check Another Address</button>
+
+</section>
+
+<!-- ── Error result ────────────────────────────────────────────────────── -->
+<section class="card card--error card--hidden" id="section-error" aria-live="assertive">
+  <span class="error-icon">⚠️</span>
+  <div>
+    <p class="error-heading" id="error-heading">Query failed</p>
+    <p class="error-detail" id="error-detail"></p>
+  </div>
+</section>

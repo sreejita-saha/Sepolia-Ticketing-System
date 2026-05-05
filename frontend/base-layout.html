@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="
+      default-src 'none';
+      script-src  'self' https://cdn.jsdelivr.net 'unsafe-inline';
+      style-src   'self';
+      connect-src https://sepolia.drpc.org https://sepolia.etherscan.io https://cdn.jsdelivr.net ws://127.0.0.1:5500;
+      img-src     'none';
+      font-src    'none';
+      frame-src   'none';
+      object-src  'none';
+      base-uri    'none';
+      form-action 'none';
+    "
+  />
+  <title id="page-title">Sepolia Ticketing</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link id="page-styles" rel="stylesheet" href="">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="site-logo">🎟 Sepolia Ticketing</a>
+    <nav class="site-nav">
+      <a href="index.html" class="nav-link" data-page="index">Events</a>
+      <a href="create-wallet.html" class="nav-link" data-page="create-wallet">Create Wallet</a>
+      <a href="balance.html" class="nav-link" data-page="balance">My Tickets</a>
+      <a href="buy.html" class="nav-link" data-page="buy">Buy Tickets</a>
+      <a href="transfer.html" class="nav-link" data-page="transfer">Transfer</a>
+    </nav>
+  </header>
+
+  <main class="page-container" id="page-content">
+    <!-- Page content injected here -->
+  </main>
+
+  <footer class="site-footer">
+    <p>Sepolia Ticketing System — Testnet only. All transactions are on the Sepolia blockchain.</p>
+  </footer>
+
+  <script id="page-scripts"></script>
+
+  <script>
+    /**
+     * Layout injector: loads page content and scripts dynamically
+     * Usage: Create page-*.html files with just the <main> content
+     * This base layout handles header/footer and active nav state
+     */
+    (function() {
+      const PAGE_MAP = {
+        index: { content: 'pages/index.html', styles: '', scripts: 'js/pages/index.js', title: 'Events' },
+        'create-wallet': { content: 'pages/create-wallet.html', styles: 'css/pages/create-wallet.css', scripts: ['js/utils.js', 'https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js'], title: 'Create Wallet' },
+        balance: { content: 'pages/balance.html', styles: 'css/pages/balance.css', scripts: ['https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js', 'js/utils.js', 'js/config.js', 'js/pages/balance.js'], title: 'My Tickets' },
+        buy: { content: 'pages/buy.html', styles: 'css/pages/buy.css', scripts: ['https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js', 'js/utils.js', 'js/config.js', 'js/pages/buy.js'], title: 'Buy Tickets' },
+        transfer: { content: 'pages/transfer.html', styles: 'css/pages/transfer.css', scripts: ['https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js', 'js/utils.js', 'js/config.js', 'js/pages/transfer.js'], title: 'Transfer' },
+      };
+
+      async function loadPage(pageName) {
+        const config = PAGE_MAP[pageName];
+        if (!config) return;
+
+        // Update title
+        document.getElementById('page-title').textContent = config.title + ' — Sepolia Ticketing';
+
+        // Update nav active state
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.toggle('nav-active', link.dataset.page === pageName);
+        });
+
+        // Load page styles
+        const styleLink = document.getElementById('page-styles');
+        if (config.styles) {
+          styleLink.href = config.styles;
+          styleLink.disabled = false;
+        } else {
+          styleLink.disabled = true;
+        }
+
+        // Load page content
+        try {
+          const response = await fetch(config.content);
+          if (!response.ok) throw new Error(`Failed to load ${config.content}`);
+          document.getElementById('page-content').innerHTML = await response.text();
+        } catch (err) {
+          console.error('Page load error:', err);
+          document.getElementById('page-content').innerHTML = '<p>Error loading page.</p>';
+        }
+
+        // Load page scripts
+        const scriptsContainer = document.getElementById('page-scripts');
+        scriptsContainer.innerHTML = '';
+
+        const scripts = Array.isArray(config.scripts) ? config.scripts : [config.scripts];
+        for (const script of scripts) {
+          if (script) {
+            const scriptEl = document.createElement('script');
+            if (script.startsWith('http')) {
+              scriptEl.src = script;
+              scriptEl.crossOrigin = 'anonymous';
+              if (script.includes('web3')) {
+                scriptEl.integrity = 'sha384-ulu2XS1P+kSni6pddyZyDGmNiztg1R9ziuOn0U+RtEoVB46ekZ9MLOzruBMtXjQQ';
+              }
+            } else {
+              scriptEl.src = script;
+            }
+            scriptsContainer.appendChild(scriptEl);
+          }
+        }
+      }
+
+      // Determine current page from filename or hash
+      function getCurrentPage() {
+        const filename = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+        return PAGE_MAP[filename] ? filename : 'index';
+      }
+
+      // Load page on page load
+      loadPage(getCurrentPage());
+    })();
+  </script>
+
+</body>
+</html>
