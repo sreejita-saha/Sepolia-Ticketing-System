@@ -181,3 +181,130 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 - **Human changes:** Added <script src="js/utils.js"></script> in script loading order
 - **Accepted on:** —
 - **Notes:** Script load order now: Web3.js (CDN) → utils.js → create-wallet.js. Future enhancements can use shared utils without modification to this file.
+
+---
+
+## [TICKET RETURN] 2026-05-05
+
+### File: `contracts/TicketingSystem.sol` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Added `returnTicket(uint256 quantity)` function and `TicketReturned` event to allow attendees to return tickets to the vendor's remaining supply.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** Requires redeployment after this change; CONTRACT_ADDRESS in config.js must be updated to the new deployment address.
+
+### File: `frontend/transfer.html`
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Ticket return page with seven transaction states: wallet loader, wallet loaded (with attendee + vendor balance), no-tickets warning, return form (quantity input), pending (spinner + tx hash link), success (updated dual balances), reverted (revert reason + tx hash), and network/wallet error.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** CSP matches buy.html — connect-src allows sepolia.drpc.org and sepolia.etherscan.io. Script load order: layout.js → Web3.js (CDN) → utils.js → config.js → transfer.js.
+
+### File: `frontend/css/pages/transfer.css`
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Page-specific styles for transfer.html — wallet info panel, no-tickets warning, quantity form, spinner, success/error/reverted state cards, result detail rows, and Etherscan link.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** Patterns reused from buy.css. Responsive layout with 640px breakpoint for mobile stacking.
+
+### File: `frontend/js/pages/transfer.js`
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** State machine for ticket return flow — wallet unlock (private key + keystore), pre-return balance fetch (attendee tickets + vendor remaining), quantity validation, transaction sign/send, polling for receipt, dual balance verification on success, and revert reason parsing on failure.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** "Return Another" resets to wallet-loaded state and re-fetches both balances without reloading the page. Polling waits up to 5 minutes (60 attempts × 5s). Revert reason parser uses shared parseRevertReason() from utils.js.
+
+### File: `frontend/js/config.js` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Added `returnTicket(uint256)` ABI entry to CONTRACT_ABI to support the ticket return page.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** returnTicket is nonpayable — no ETH value sent, gas only.
+
+---
+
+## [SHARED LAYOUT] 2026-05-06
+
+### File: `frontend/js/layout.js`
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Single-source-of-truth injector for the shared site header (logo + nav) and footer. Runs as an IIFE on every page, detects the current filename, marks the correct nav link active, and injects HTML into `#site-header` and `#site-footer` placeholders.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** No fetch, no routing, no build step — works with Live Server directly. Each page remains a standalone HTML file; layout.js handles only the chrome. All five pages (index, create-wallet, balance, buy, transfer) load this as their first script.
+
+### File: `frontend/index.html` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Replaced hardcoded header/footer/nav markup with empty `#site-header` and `#site-footer` placeholder elements. Loads layout.js to inject shared chrome at runtime.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** Eliminates nav duplication. Any nav change now requires editing only layout.js.
+
+### File: `frontend/buy.html` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** layout.js loads before Web3.js CDN in script order.
+
+### File: `frontend/balance.html` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** layout.js loads before Web3.js CDN in script order.
+
+### File: `frontend/transfer.html` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** layout.js loads before Web3.js CDN in script order.
+
+### File: `frontend/create-wallet.html` (updated)
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** layout.js loads before Web3.js CDN in script order.
+
+### File: `frontend/base-layout.html` (deleted)
+- **Status:** Removed
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** SPA-style fetch-based layout shell — superseded by layout.js injector approach. Deleted as redundant.
+- **Notes:** The fetch-based SPA approach was abandoned in favour of standalone HTML pages + shared JS injector, which requires no server-side routing and works directly with Live Server.
+
+---
+
+## [DOCUMENTATION] 2026-05-06
+
+### File: `README.md`
+- **Status:** AI Generated
+- **AI-generated:** Yes
+- **Author:** Claude (AI)
+- **Summary:** Full project README covering overview, requirements table, features, project structure, quick start guide, smart contract functions, tech stack, architecture summary, security notes, troubleshooting table, and references.
+- **Human changes:** None yet
+- **Accepted on:** —
+- **Notes:** Requirements table lists: Sepolia Testnet, SETH (from faucet), local web server, modern browser, Ethereum wallet (private key or keystore).

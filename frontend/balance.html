@@ -23,16 +23,7 @@
 </head>
 <body>
 
-  <header class="site-header">
-    <a href="index.html" class="site-logo">🎟 Sepolia Ticketing</a>
-    <nav class="site-nav">
-      <a href="index.html">Events</a>
-      <a href="buy.html">Buy Tickets</a>
-      <a href="balance.html" class="nav-active">Balance Check</a>
-      <a href="transfer.html">Transfer</a>
-      <a href="create-wallet.html">Create Wallet</a>
-    </nav>
-  </header>
+  <header id="site-header" class="site-header"></header>
 
   <main class="page-container">
 
@@ -209,10 +200,9 @@
 
   </main>
 
-  <footer class="site-footer">
-    <p>Sepolia Ticketing System — Testnet only. All data is queried live from the Sepolia blockchain.</p>
-  </footer>
+  <footer id="site-footer" class="site-footer"></footer>
 
+  <script src="js/layout.js"></script>
   <!-- Web3.js from CDN — pinned version, SRI hash must be verified before acceptance -->
   <script
     src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"
