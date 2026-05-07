@@ -9,9 +9,7 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 ## [WALLET CREATION] 2026-05-04
 
 ### File: `frontend/create-wallet.html`
-- **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
+- **Status:** Human Reviewed
 - **Summary:** Wallet creation page — password entry form and result display with security warning.
 - **Human changes:** Human review showed few security such as issues which where prompted to be fixed
 - **Accepted on:** — 04/05/2025
@@ -19,8 +17,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/css/main.css`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Global styles, design tokens, layout primitives, and shared component styles for the entire DApp.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -28,8 +24,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/css/pages/create-wallet.css`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Page-specific styles for the wallet creation page (warning banner, result boxes, countdown).
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -37,8 +31,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/pages/create-wallet.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Wallet generation logic using Web3.js; handles password validation, keystore encryption/download, 30-second countdown, clipboard copy, and reset.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -50,8 +42,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/config.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Shared config — CONTRACT_ADDRESS, CONTRACT_ABI, RPC_URL, CHAIN_ID. All pages load this before their own script.
 - **Human changes:** Some UX changes and error prevention changes
 - **Accepted on:** —
@@ -59,8 +49,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/balance.html`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Three-role balance check page — Attendee, Doorman, Vendor — each with distinct query logic and display.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -68,8 +56,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/css/pages/balance.css`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Page-specific styles for balance.html — role selector, stat cards, validity block, spinner, error card.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -77,8 +63,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/pages/balance.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Three-role query dispatcher — Attendee queries ETH+tickets, Doorman queries tickets only, Vendor queries ETH+tickets+supply. All queries are live, no caching.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -90,8 +74,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/buy.html`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Ticket purchase page with eight transaction states: idle (price display), wallet loading (private key/keystore), insufficient balance warning, sold out message, pending (with tx hash), success (with updated balance), reverted (with parsed reason), and rejected (user cancelled).
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -99,8 +81,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/css/pages/buy.css`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Page-specific styles for buy.html — price display, wallet loader, transaction state cards, spinners, and detail sections.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -108,8 +88,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/pages/buy.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Comprehensive ticket purchase logic handling all eight transaction states with detailed error parsing and revert reason classification.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -117,10 +95,8 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/config.js` (updated)
 - **Status:** Human Reviewed
-- **AI-generated:** Partial
-- **Author:** Claude (AI) → Sreejita (added buy page ABI entries)
 - **Summary:** Added three new ABI entries for ticket purchase: ticketPrice (view), ticketsRemaining (view), buyTicket (payable).
-- **Human changes:** Extended CONTRACT_ABI array with buy page functions
+- **Human changes:** Extended CONTRACT_ABI array with buy page functions. added buy page ABI entries
 - **Accepted on:** —
 - **Notes:** ticketPrice and ticketsRemaining are read-only (view), cost no gas. buyTicket is payable and requires wei value matching ticket price.
 
@@ -130,8 +106,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/utils.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Shared utility functions imported by all frontend pages — error parsing, formatting, validation, and async helpers.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -139,8 +113,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/buy.html` (updated)
 - **Status:** Human Reviewed
-- **AI-generated:** Partial
-- **Author:** Claude (AI) → Sreejita (added utils.js import)
 - **Summary:** Updated to load utils.js before buy.js to enable shared error parsing.
 - **Human changes:** Added <script src="js/utils.js"></script> in script loading order
 - **Accepted on:** —
@@ -148,8 +120,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/pages/buy.js` (updated)
 - **Status:** Human Reviewed
-- **AI-generated:** Partial
-- **Author:** Claude (AI) → Claude (refactored to use utils)
 - **Summary:** Refactored to import and use parseRevertReason(), formatEth(), truncateAddress(), and getEtherscanLink() from utils.js.
 - **Human changes:** Removed duplicate function definitions, added utils.js validation check
 - **Accepted on:** —
@@ -157,8 +127,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/balance.html` (updated)
 - **Status:** Human Reviewed
-- **AI-generated:** Partial
-- **Author:** Claude (AI) → Claude (added utils.js import)
 - **Summary:** Updated to load utils.js before balance.js to enable shared helpers.
 - **Human changes:** Added <script src="js/utils.js"></script> in script loading order
 - **Accepted on:** —
@@ -166,8 +134,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/pages/balance.js` (updated)
 - **Status:** Human Reviewed
-- **AI-generated:** Partial
-- **Author:** Claude (AI) → Claude (refactored to use utils)
 - **Summary:** Refactored to import and use formatEth(), truncateAddress(), isValidEthAddress(), and looksLikeEnsName() from utils.js.
 - **Human changes:** Removed duplicate function definitions, added utils.js validation check
 - **Accepted on:** —
@@ -175,8 +141,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/create-wallet.html` (updated)
 - **Status:** Human Reviewed
-- **AI-generated:** Partial
-- **Author:** Claude (AI) → Claude (added utils.js import)
 - **Summary:** Updated to load utils.js before create-wallet.js for future cross-page utility consistency.
 - **Human changes:** Added <script src="js/utils.js"></script> in script loading order
 - **Accepted on:** —
@@ -188,8 +152,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `contracts/TicketingSystem.sol` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Added `returnTicket(uint256 quantity)` function and `TicketReturned` event to allow attendees to return tickets to the vendor's remaining supply.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -197,8 +159,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/transfer.html`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Ticket return page with seven transaction states: wallet loader, wallet loaded (with attendee + vendor balance), no-tickets warning, return form (quantity input), pending (spinner + tx hash link), success (updated dual balances), reverted (revert reason + tx hash), and network/wallet error.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -206,8 +166,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/css/pages/transfer.css`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Page-specific styles for transfer.html — wallet info panel, no-tickets warning, quantity form, spinner, success/error/reverted state cards, result detail rows, and Etherscan link.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -215,8 +173,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/pages/transfer.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** State machine for ticket return flow — wallet unlock (private key + keystore), pre-return balance fetch (attendee tickets + vendor remaining), quantity validation, transaction sign/send, polling for receipt, dual balance verification on success, and revert reason parsing on failure.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -224,8 +180,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/config.js` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Added `returnTicket(uint256)` ABI entry to CONTRACT_ABI to support the ticket return page.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -237,8 +191,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/js/layout.js`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Single-source-of-truth injector for the shared site header (logo + nav) and footer. Runs as an IIFE on every page, detects the current filename, marks the correct nav link active, and injects HTML into `#site-header` and `#site-footer` placeholders.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -246,8 +198,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/index.html` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Replaced hardcoded header/footer/nav markup with empty `#site-header` and `#site-footer` placeholder elements. Loads layout.js to inject shared chrome at runtime.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -255,8 +205,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/buy.html` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -264,8 +212,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/balance.html` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -273,8 +219,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/transfer.html` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -282,8 +226,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/create-wallet.html` (updated)
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Replaced hardcoded header/footer/nav markup with layout.js placeholder pattern.
 - **Human changes:** None yet
 - **Accepted on:** —
@@ -291,8 +233,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `frontend/base-layout.html` (deleted)
 - **Status:** Removed
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** SPA-style fetch-based layout shell — superseded by layout.js injector approach. Deleted as redundant.
 - **Notes:** The fetch-based SPA approach was abandoned in favour of standalone HTML pages + shared JS injector, which requires no server-side routing and works directly with Live Server.
 
@@ -302,8 +242,6 @@ Status progression: `AI Generated` → `Human Reviewed` → `Accepted`
 
 ### File: `README.md`
 - **Status:** AI Generated
-- **AI-generated:** Yes
-- **Author:** Claude (AI)
 - **Summary:** Full project README covering overview, requirements table, features, project structure, quick start guide, smart contract functions, tech stack, architecture summary, security notes, troubleshooting table, and references.
 - **Human changes:** None yet
 - **Accepted on:** —
